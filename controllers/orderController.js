@@ -1,15 +1,21 @@
-let orders = [];
+const Order = require("../models/Order");
 
-exports.getOrders = (req, res) => {
-  res.json(orders);
+// GET orders
+exports.getOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.createOrder = (req, res) => {
-  const order = {
-    id: orders.length + 1,
-    ...req.body
-  };
-
-  orders.push(order);
-  res.status(201).json(order);
+// POST order
+exports.createOrder = async (req, res, next) => {
+  try {
+    const order = await Order.create(req.body);
+    res.status(201).json(order);
+  } catch (err) {
+    next(err);
+  }
 };

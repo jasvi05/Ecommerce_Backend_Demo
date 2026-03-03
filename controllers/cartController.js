@@ -1,10 +1,24 @@
-let cart = [];
+const Cart = require("../models/Cart");
 
-exports.getCart = (req, res) => {
-  res.json(cart);
+// GET cart
+exports.getCart = async (req, res, next) => {
+  try {
+    const cart = await Cart.find();
+    res.json(cart);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.addToCart = (req, res) => {
-  cart.push(req.body);
-  res.status(201).json(req.body);
+// POST cart
+exports.addToCart = async (req, res, next) => {
+  try {
+    const cartItem = await Cart.create(req.body);
+    res.status(201).json({
+      message: "Item added to cart",
+      cartItem
+    });
+  } catch (err) {
+    next(err);
+  }
 };

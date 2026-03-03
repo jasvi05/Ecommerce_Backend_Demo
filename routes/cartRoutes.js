@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { getCart, addToCart } = require("../controllers/cartController");
+const validate = require("../middleware/validate");
+const cartController = require("../controllers/cartController");
 
-router.get("/", getCart);
-router.post("/", addToCart);
+router.get("/", cartController.getCart);
+router.post("/", validate(["userId", "productId", "quantity"]), cartController.addToCart);
 
 module.exports = router;
